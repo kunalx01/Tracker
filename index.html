@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GATE CS · Mission Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="authGate" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center;padding:20px">
+  <div class="panel" style="width:min(420px,100%)">
+    <div class="eyebrow">GATE CS · CLOUD SYNC</div>
+    <h2>Sign in to sync your tracker</h2>
+    <p style="color:var(--text-dim);font-size:12px">Use the same Firebase account on your devices. Your tracker data is stored privately in Firestore.</p>
+    <label>Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label style="margin-top:10px">Password<input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters"></label>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="primary" id="loginBtn">Sign in</button>
+      <button class="ghost-btn" id="signupBtn">Create account</button>
+    </div>
+    <div id="authMsg" style="margin-top:10px;color:var(--text-dim);font-size:11px"></div>
+  </div>
+</div>
+
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="eyebrow">GATE CS · Robotics &amp; Automation, IISc</div>
+    <h1>Mission Tracker</h1>
+  </div>
+  <div class="countdown">
+    <div><div class="num" id="daysLeft">--</div><div class="label">days to GATE</div></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-view="dashboard">Dashboard</button>
+  <button class="tab-btn" data-view="syllabus">Syllabus</button>
+  <button class="tab-btn" data-view="phases">Phases</button>
+</nav>
+
+<div class="view active" id="view-dashboard">
+  <div class="phase-banner">
+    <div><div class="ptitle" id="phaseTitle">PHASE —</div><div class="pdesc" id="phaseDesc">Loading phase...</div></div>
+    <div class="ptitle" id="phaseDaysLeft"></div>
+  </div>
+
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <h2 style="margin-bottom:0">Overall progress</h2>
+      <button class="primary" id="markTodayBtn">✓ Mark today studied</button>
+    </div>
+    <div class="overall-progress">
+      <div class="op-top"><span class="op-label">All lectures + all DPPs, all subjects</span><span class="op-pct" id="overallPct">--%</span></div>
+      <div class="bar-lg"><div id="overallBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="v" id="statLectures">--</div><div class="l">Lectures completed</div></div>
+    <div class="stat"><div class="v" id="statDpps">--</div><div class="l">DPPs completed</div></div>
+    <div class="stat"><div class="v" id="statStreak">--</div><div class="l">Day streak</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Pending by subject <span class="sub">highest pending first</span></h2>
+    <div id="pendingList"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Subject progress <span class="sub">lectures + DPPs combined</span></h2>
+    <div id="subjBars"></div>
+  </div>
+</div>
+
+<div class="view" id="view-syllabus">
+  <div class="panel">
+    <h2>Syllabus tracker <span class="sub">edit every lecture and DPP number</span></h2>
+    <div class="notice">Enter completed and total numbers for every subject. Overall progress is calculated from the combined total of every lecture and every DPP — subjects are not averaged equally.</div>
+    <div id="subjectBlocks"></div>
+  </div>
+</div>
+
+<div class="view" id="view-phases">
+  <div class="panel">
+    <h2>Study phases <span class="sub">fully editable</span></h2>
+    <div id="phaseEditor"></div>
+    <button class="primary" id="phaseAdd">Add phase</button>
+  </div>
+  <div class="panel">
+    <h2>Goal date</h2>
+    <div class="form-row"><label>GATE date<input type="date" id="goalDate"></label></div>
+    <button class="primary" id="saveGoal">Save goal date</button>
+  </div>
+</div>
+
+<footer>
+  <button id="resetBtn">Reset all tracker data</button>
+  <button id="logoutBtn" class="ghost-btn" style="margin-left:8px">Sign out</button>
+  <div id="syncStatus" style="margin-top:8px;font:10px JetBrains Mono,monospace;color:var(--text-faint)"></div>
+</footer>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
